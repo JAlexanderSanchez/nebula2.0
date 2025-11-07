@@ -5,7 +5,7 @@ import { Star, MessageCircle, Package, Droplets, Zap, ArrowLeft, ChevronLeft, Ch
 import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
-const WHATSAPP_NUMBER = process.env.REACT_APP_WHATSAPP_NUMBER || '593960249628';
+const WHATSAPP_NUMBER = process.env.REACT_APP_WHATSAPP_NUMBER || '59360249628';
 
 function App() {
   const [currentView, setCurrentView] = useState('home');
