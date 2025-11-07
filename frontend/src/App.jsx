@@ -415,10 +415,14 @@ function App() {
               <p className="text-purple-300 text-sm">Smoke Culture</p>
             </div>
             <div className="hidden md:flex gap-6 text-white">
-              <a href="#" className="hover:text-purple-400 transition font-semibold">Home</a>
+              {/* CORREGIDO: Home ahora apunta a la raíz */}
+              <a href="/" className="hover:text-purple-400 transition font-semibold">Home</a> 
+              {/* Este ya estaba bien, apunta a una ancla */}
               <a href="#productos" className="hover:text-purple-400 transition">Productos</a>
-              <a href="#" className="hover:text-purple-400 transition">Nosotros</a>
-              <a href="#" className="hover:text-purple-400 transition">Contacto</a>
+              {/* CORREGIDO: Usar una URL válida o el ID de una sección */}
+              <a href="/nosotros" className="hover:text-purple-400 transition">Nosotros</a> 
+              {/* CORREGIDO: Usar una URL válida o el ID de una sección */}
+              <a href="/contacto" className="hover:text-purple-400 transition">Contacto</a> 
             </div>
           </div>
         </div>
@@ -610,9 +614,12 @@ function App() {
           <p className="text-purple-300 mb-4">Smoke Culture</p>
           <p className="text-sm">© 2024 NEBULA. Todos los derechos reservados.</p>
           <div className="flex justify-center gap-4 mt-4">
-            <a href="#" className="hover:text-purple-400 transition">Instagram</a>
-            <a href="#" className="hover:text-purple-400 transition">Facebook</a>
-            <a href="#" className="hover:text-purple-400 transition">TikTok</a>
+            {/* CORREGIDO: Usar una URL válida o el ID de una sección */}
+            <a href="/instagram" className="hover:text-purple-400 transition">Instagram</a>
+            {/* CORREGIDO: Usar una URL válida o el ID de una sección */}
+            <a href="/facebook" className="hover:text-purple-400 transition">Facebook</a>
+            {/* CORREGIDO: Usar una URL válida o el ID de una sección */}
+            <a href="/tiktok" className="hover:text-purple-400 transition">TikTok</a>
           </div>
         </div>
       </footer>
@@ -621,4 +628,3 @@ function App() {
 }
 
 export default App;
-
