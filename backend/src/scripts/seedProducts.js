@@ -8,187 +8,190 @@ const Product = require('../models/Product');
 
 const products = [
   {
-    name: "Dozo THC-P Sugar Sauce 5 GR",
-    slug: "dozo-thc-p-sugar-sauce-5gr",
-    price: 50.00,
+    name: "Fume x Fruitia Vape Desechable 8000 Puffs, 5% Nicotina",
+    slug: "fume-x-fruitia-desechable-8000-puffs",
+    price: 12,
     originalPrice: null,
-    description: "Experiencia premium de vapeo con tecnología avanzada",
-    longDescription: "El Dozo THC-P Sugar Sauce ofrece una experiencia de vapeo incomparable con su fórmula especial de 5 gramos. Diseñado para usuarios que buscan calidad y sabor excepcional.",
+    description: "Vape desechable de alto rendimiento con bobina de malla y pantalla LED.",
+    longDescription: "El Fume x Fruitia 8000 Puffs es un dispositivo de vapeo desechable y recargable que combina potencia y sabor. Ofrece más de 8000 caladas con 5% de nicotina, 17 ml de e-líquido, batería recargable (700 mAh) y pantalla LED para monitorear niveles.",
     isFeatured: true,
     rating: 4.5,
-    reviews: 24,
+    reviews: 0,
     stock: "Disponible",
     imageUrls: [
-      "https://images.unsplash.com/photo-1590508969892-02fcc63dc1f2?w=600&h=600&fit=crop"
+      "https://cliccloud.co/empresas/productos-600/clic-v2-Q7ffOgbcCGYVwquphEO2-2025-10-10.png",
+      "URL_IMAGEN_FUME_FRUITIA_2"
     ],
-    availableColors: 5,
-    badge: "Últimas unidades",
+    availableColors: 3,
+    badge: "NUEVO",
     specs: {
-      puffs: "25K",
-      nicotineLevel: "50MG",
-      liquidVolume: "18ML",
-      functions: "MED/BOOST"
+      puffs: "8000",
+      nicotineLevel: "5%",
+      liquidVolume: "17ml",
+      battery: "700 mAh",
+      charging: "USB-C",
+      coil: "Mesh Coil",
+      display: "Pantalla LED (Batería y Líquido)"
     }
   },
   {
-    name: "SWF 3tk 40K",
-    slug: "swf-3tk-40k",
-    price: 30.00,
+    name: "Death Row Vapes 7000 Puffs - Blue Razz",
+    slug: "death-row-vapes-7000-blue-razz",
+    price: 10,
     originalPrice: null,
-    description: "Potencia y duración excepcional para todo el día",
-    longDescription: "Con 40,000 puffs, el SWF 3tk es el compañero perfecto para usuarios intensivos. Tecnología de doble modo para máxima satisfacción.",
+    description: "Vape desechable Death Row (Snoop Dogg) con tecnología de malla y batería recargable, sabor Blue Razz.",
+    longDescription: "Dispositivo desechable y recargable que ofrece hasta 7000 caladas. Contiene 12 ml de e-líquido con 5% de sal de nicotina y una batería de 700 mAh recargable por USB-C. El sabor Blue Razz combina mora azul con un toque fresco.",
     isFeatured: true,
-    rating: 4.8,
-    reviews: 89,
+    rating: 4.5,
+    reviews: 0,
     stock: "Disponible",
     imageUrls: [
-      "https://images.unsplash.com/photo-1609006398633-b8e8c6a8f5f1?w=600&h=600&fit=crop"
+      "https://cdn11.bigcommerce.com/s-5zbebjcuob/images/stencil/1280x1280/products/7194/18501/GR010604-1__65963.1696937320.jpg?c=2",
+      "URL_IMAGEN_BLUE_RAZZ_2"
     ],
     availableColors: 4,
-    badge: "Últimas unidades",
-    specs: {
-      puffs: "40K",
-      nicotineLevel: "35MG",
-      liquidVolume: "20ML",
-      functions: "DUAL MODE"
-    }
-  },
-  {
-    name: "Death Row 7k",
-    slug: "death-row-7k",
-    price: 10.50,
-    originalPrice: null,
-    description: "Sabor intenso y rendimiento confiable",
-    longDescription: "Death Row 7k ofrece una experiencia de vapeo potente con un diseño compacto y elegante. Ideal para llevar contigo a todas partes.",
-    isFeatured: false,
-    rating: 4.3,
-    reviews: 156,
-    stock: "Disponible",
-    imageUrls: [
-      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&h=600&fit=crop"
-    ],
-    availableColors: 6,
-    badge: null,
-    specs: {
-      puffs: "7K",
-      nicotineLevel: "50MG",
-      liquidVolume: "12ML",
-      functions: "STANDARD"
-    }
-  },
-  {
-    name: "Fume Infinity 3500",
-    slug: "fume-infinity-3500",
-    price: 15.00,
-    originalPrice: 18.00,
-    description: "Diseño premium con sabor infinito",
-    longDescription: "Fume Infinity combina estilo y funcionalidad. Con 3500 puffs de calidad premium y múltiples sabores disponibles.",
-    isFeatured: true,
-    rating: 4.7,
-    reviews: 203,
-    stock: "Disponible",
-    imageUrls: [
-      "https://images.unsplash.com/photo-1624628639856-100bf817fd55?w=600&h=600&fit=crop"
-    ],
-    availableColors: 8,
     badge: "NUEVO",
     specs: {
-      puffs: "3.5K",
-      nicotineLevel: "50MG",
-      liquidVolume: "10ML",
-      functions: "STANDARD"
+      puffs: "7000",
+      nicotineLevel: "5%",
+      liquidVolume: "12ml",
+      battery: "700 mAh",
+      charging: "USB-C",
+      coil: "Mesh Coil",
+      flavor: "Blue Razz (Morazul)"
     }
   },
   {
-    name: "Elf Bar BC5000",
-    slug: "elf-bar-bc5000",
-    price: 22.00,
+    name: "Yogi Bar 8000 Puffs - Varios sabores - 5% Nicotina",
+    slug: "yogi-bar-8000",
+    price: 9,
     originalPrice: null,
-    description: "Calidad superior con tecnología avanzada",
-    longDescription: "Elf Bar BC5000 es conocido por su calidad excepcional y durabilidad. Con más de 5000 puffs y una batería de larga duración.",
+    description: "Vape desechable Yogi Bar con el galardonado e-líquido de barra de granola de fresa.",
+    longDescription: "Dispositivo desechable recargable de la marca Yogi E-Liquid. Ofrece hasta 8000 caladas, 17ml de e-líquido de 5% de nicotina y una batería recargable de 600mAh. Sabor a dulce y madura fresa combinada con la dulzura natural.",
     isFeatured: true,
-    rating: 4.9,
-    reviews: 342,
+    rating: 4.6,
+    reviews: 0,
     stock: "Disponible",
     imageUrls: [
-      "https://images.unsplash.com/photo-1533409962075-6701ad359ddd?w=600&h=600&fit=crop"
+      "https://vapecraftinc.com/media/amasty/webp/catalog/product/cache/9af08a49c64f622a3ecfb8ecadcd8f84/y/o/yogi-bar-8000-disposable-vape_jpg.webp",
+      "URL_IMAGEN_YOGI_STRAWBERRY_2"
     ],
-    availableColors: 12,
-    badge: null,
+    availableColors: 3,
+    badge: "NUEVO",
     specs: {
-      puffs: "5K",
-      nicotineLevel: "50MG",
-      liquidVolume: "13ML",
-      functions: "STANDARD"
+      puffs: "8000",
+      nicotineLevel: "5%",
+      liquidVolume: "17ml",
+      battery: "600 mAh",
+      charging: "USB-C",
+      coil: "Mesh Coil",
+      airflow: "Ajustable"
     }
   },
   {
-    name: "Hyde Retro Rave",
-    slug: "hyde-retro-rave",
-    price: 18.50,
+    name: "Flavor Vapes 6000 Puffs - Cool Mint",
+    slug: "flavor-vapes-6000-cool-mint",
+    price: 10,
     originalPrice: null,
-    description: "Estilo retro con sabor moderno",
-    longDescription: "Hyde Retro Rave combina un diseño único con sabores vibrantes. Perfecto para aquellos que buscan algo diferente.",
+    description: "Vape desechable Flavor Vapes con diseño compacto y 6000 caladas garantizadas, sabor menta fría.",
+    longDescription: "Un dispositivo desechable de alto rendimiento con 13ml de e-líquido y 5% de nicotina. Cuenta con una batería recargable vía USB-C y bobina Mesh para una producción de vapor consistente. El sabor Cool Mint ofrece una sensación limpia y refrescante de menta.",
     isFeatured: false,
     rating: 4.4,
-    reviews: 98,
+    reviews: 0,
     stock: "Disponible",
     imageUrls: [
-      "https://images.unsplash.com/photo-1607619056574-7b8d3ee536b2?w=600&h=600&fit=crop"
+      "URL_IMAGEN_FLAVOR_COOL_MINT_1",
+      "URL_IMAGEN_FLAVOR_COOL_MINT_2"
     ],
-    availableColors: 7,
-    badge: null,
-    specs: {
-      puffs: "2.5K",
-      nicotineLevel: "50MG",
-      liquidVolume: "10ML",
-      functions: "STANDARD"
-    }
-  },
-  {
-    name: "Flum Float 3000",
-    slug: "flum-float-3000",
-    price: 16.00,
-    originalPrice: 20.00,
-    description: "Suave y elegante como flotar en el aire",
-    longDescription: "Flum Float ofrece una experiencia de vapeo suave y satisfactoria. Diseño ergonómico y sabores refrescantes.",
-    isFeatured: false,
-    rating: 4.6,
-    reviews: 167,
-    stock: "Disponible",
-    imageUrls: [
-      "https://images.unsplash.com/photo-1566150905458-1bf1fc113f2d?w=600&h=600&fit=crop"
-    ],
-    availableColors: 9,
-    badge: "Últimas unidades",
-    specs: {
-      puffs: "3K",
-      nicotineLevel: "50MG",
-      liquidVolume: "8ML",
-      functions: "STANDARD"
-    }
-  },
-  {
-    name: "KangVape Onee Max",
-    slug: "kangvape-onee-max",
-    price: 25.00,
-    originalPrice: null,
-    description: "Máxima potencia en un diseño compacto",
-    longDescription: "KangVape Onee Max ofrece la máxima potencia en un dispositivo compacto. Ideal para usuarios que buscan rendimiento superior.",
-    isFeatured: true,
-    rating: 4.8,
-    reviews: 124,
-    stock: "Disponible",
-    imageUrls: [
-      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&h=600&fit=crop"
-    ],
-    availableColors: 5,
+    availableColors: 4,
     badge: "NUEVO",
     specs: {
-      puffs: "5K",
-      nicotineLevel: "50MG",
-      liquidVolume: "13ML",
-      functions: "BOOST MODE"
+      puffs: "6000",
+      nicotineLevel: "5%",
+      liquidVolume: "13ml",
+      charging: "USB-C",
+      coil: "Mesh Coil",
+      flavor: "Cool Mint (Menta Fría)"
+    }
+  },
+  {
+    name: "Strio Vapes XC6500 Puffs - 5% de Nicotina",
+    slug: "strio-vapes-xc6500-blue-razz-ice",
+    price: 14,
+    originalPrice: null,
+    description: "Vape desechable Strio XC, recargable y con un diseño ergonómico, sabor mora azul helada.",
+    longDescription: "El Strio XC ofrece aproximadamente 6500 caladas con 12ml de e-líquido de sal de nicotina al 5%. Refrescante.",
+    isFeatured: false,
+    rating: 4.3,
+    reviews: 0,
+    stock: "Disponible",
+    imageUrls: [
+      "https://westcoastvapesupply.com/cdn/shop/articles/The_Strio_EBCreate_XC6500_Disposable_Vape_Flavor_Review.jpg?v=1712899037&width=700",
+      "URL_IMAGEN_STRIO_BLUE_RAZZ_2"
+    ],
+    availableColors: 5,
+    badge: "Últimas unidades",
+    specs: {
+      puffs: "6500",
+      nicotineLevel: "5%",
+      liquidVolume: "12ml",
+      charging: "USB-C",
+      coil: "Mesh Coil",
+      flavor: "Blue Razz Ice"
+    }
+  },
+  {
+    name: "UWELL Vapes 12000 Puffs - Watermelon Ice",
+    slug: "uwell-vapes-12000-watermelon-ice",
+    price: 18,
+    originalPrice: null,
+    description: "Vape desechable UWELL de ultra alta capacidad con tecnología de doble malla y 12000 caladas.",
+    longDescription: "Dispositivo desechable insignia de UWELL, diseñado para longevidad y sabor intenso. Ofrece hasta 12000 caladas, 5% de nicotina y una batería recargable de larga duración. Su bobina dual asegura que cada calada sea potente. Sabor: Sandía dulce con un acabado refrescante de hielo.",
+    isFeatured: true,
+    rating: 4.8,
+    reviews: 0,
+    stock: "Disponible",
+    imageUrls: [
+      "https://nubedensa.com/wp-content/uploads/2025/09/482222602_1912744686167799_3594784751135893163_n-700x700.webp.jpg",
+      "URL_IMAGEN_UWELL_WM_ICE_2"
+    ],
+    availableColors: 2,
+    badge: "NUEVO",
+    specs: {
+      puffs: "12000",
+      nicotineLevel: "5%",
+      liquidVolume: "20ml",
+      charging: "USB-C",
+      coil: "Dual Mesh Coil",
+      display: "LED de Batería y Líquido",
+      flavor: "Watermelon Ice"
+    }
+  },
+  {
+    name: "NEXA Vapes 20000 Puffs - Chicago Blueberry Mint",
+    slug: "nexa-vapes-20000-chicago-blueberry-mint",
+    price: 20,
+    originalPrice: null,
+    description: "Vape desechable NEXA de capacidad extrema con pantalla de visualización y tecnología de doble malla.",
+    longDescription: "El NEXA 20K ofrece hasta 20,000 caladas, impulsado por una bobina dual de malla para sabor y vapor constantes. Contiene 5% de nicotina, batería recargable y una pantalla grande para monitorear el e-líquido y la batería. El sabor Chicago Blueberry Mint combina arándanos maduros con un toque refrescante de menta.",
+    isFeatured: true,
+    rating: 4.7,
+    reviews: 0,
+    stock: "Disponible",
+    imageUrls: [
+      "https://provape.com/media/mf_webp/jpg/media/catalog/product/cache/896a704700b43f8a3d5d98936b485a9e/c/h/chicago_blueberry_mint_nexa_n20000_rechargeable_disposable_1.webp",
+      "URL_IMAGEN_NEXA_CBM_2"
+    ],
+    availableColors: 2,
+    badge: "Últimas unidades",
+    specs: {
+      puffs: "20000",
+      nicotineLevel: "5%",
+      liquidVolume: "20ml",
+      charging: "USB-C",
+      coil: "Dual Mesh Coil",
+      display: "Pantalla LED de Monitoreo",
+      flavor: "Chicago Blueberry Mint"
     }
   }
 ];
@@ -199,19 +202,45 @@ const seedProducts = async () => {
     await mongoose.connect(process.env.MONGODB_URI);
     console.log('✅ Conectado a MongoDB');
 
+    // Verificar el schema del modelo
+    console.log('\n🔍 Verificando schema del modelo Product...');
+    const schema = Product.schema;
+    
+    // Verificar campos requeridos en specs
+    if (schema.path('specs.puffs')) {
+      console.log('✓ specs.puffs encontrado');
+    }
+    if (schema.path('specs.nicotineLevel')) {
+      console.log('✓ specs.nicotineLevel encontrado');
+    }
+    if (schema.path('specs.liquidVolume')) {
+      console.log('✓ specs.liquidVolume encontrado');
+    }
+    
+    // Verificar valores permitidos para badge
+    if (schema.path('badge') && schema.path('badge').enumValues) {
+      console.log('✓ Valores permitidos para badge:', schema.path('badge').enumValues);
+    }
+
     // Limpiar productos existentes (opcional - comentar si quieres mantener los existentes)
-    // await Product.deleteMany({});
-    // console.log('🗑️  Productos existentes eliminados');
+    await Product.deleteMany({});
+    console.log('\n🗑️  Productos existentes eliminados');
 
-    // Insertar productos
-    const createdProducts = await Product.insertMany(products);
-    console.log(`✅ ${createdProducts.length} productos creados exitosamente`);
+    // Insertar productos uno por uno para mejor debugging
+    console.log('\n📦 Insertando productos...');
+    const createdProducts = [];
+    
+    for (let i = 0; i < products.length; i++) {
+      try {
+        const product = await Product.create(products[i]);
+        createdProducts.push(product);
+        console.log(`✅ ${i + 1}. ${product.name} - ${product.price}`);
+      } catch (error) {
+        console.error(`❌ Error en producto ${i + 1} (${products[i].name}):`, error.message);
+      }
+    }
 
-    // Mostrar los productos creados
-    console.log('\n📦 Productos creados:');
-    createdProducts.forEach((product, index) => {
-      console.log(`${index + 1}. ${product.name} - $${product.price}`);
-    });
+    console.log(`\n✅ ${createdProducts.length} de ${products.length} productos creados exitosamente`);
 
     process.exit(0);
   } catch (error) {
@@ -222,4 +251,3 @@ const seedProducts = async () => {
 
 // Ejecutar el script
 seedProducts();
-
