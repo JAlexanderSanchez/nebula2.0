@@ -1,11 +1,7 @@
-// App component
-
 import React, { useState, useEffect } from 'react';
 import { Star, MessageCircle, Package, Droplets, Zap, ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
-import axios from 'axios';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
-const WHATSAPP_NUMBER = process.env.REACT_APP_WHATSAPP_NUMBER || '593999999999';
+const WHATSAPP_NUMBER = '593960249628';
 
 function App() {
   const [currentView, setCurrentView] = useState('home');
@@ -14,172 +10,139 @@ function App() {
   const [isCarouselPaused, setIsCarouselPaused] = useState(false);
   const [userRating, setUserRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
-  const [products, setProducts] = useState([]);
-  const [featuredProducts, setFeaturedProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
 
-  // Cargar productos desde la API
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await axios.get(`${API_URL}/products`);
-        if (response.data.success) {
-          setProducts(response.data.data);
-          setFeaturedProducts(response.data.data.filter(p => p.isFeatured));
-        }
-      } catch (error) {
-        console.error('Error al cargar productos:', error);
-        // Usar productos de ejemplo si falla la API
-        loadExampleProducts();
-      } finally {
-        setLoading(false);
-      }
-    };
+  const products = [
+    {
+      _id: '1',
+      name: "Dozo THC-P Sugar Sauce 5 GR",
+      price: 50.00,
+      rating: 4.5,
+      reviews: 24,
+      stock: "Disponible",
+      specs: {
+        puffs: "25K",
+        nicotineLevel: "50MG",
+        liquidVolume: "18ML",
+        functions: "MED/BOOST"
+      },
+      availableColors: 5,
+      imageUrls: ["https://images.unsplash.com/photo-1590508969892-02fcc63dc1f2?w=800&h=800&fit=crop"],
+      badge: "Últimas unidades",
+      description: "Experiencia premium de vapeo con tecnología avanzada",
+      longDescription: "El Dozo THC-P Sugar Sauce ofrece una experiencia de vapeo incomparable con su fórmula especial de 5 gramos.",
+      isFeatured: true
+    },
+    {
+      _id: '2',
+      name: "SWF 3tk 40K",
+      price: 30.00,
+      rating: 4.8,
+      reviews: 89,
+      stock: "Disponible",
+      specs: {
+        puffs: "40K",
+        nicotineLevel: "35MG",
+        liquidVolume: "20ML",
+        functions: "DUAL MODE"
+      },
+      availableColors: 4,
+      imageUrls: ["https://images.unsplash.com/photo-1609006398633-b8e8c6a8f5f1?w=800&h=800&fit=crop"],
+      badge: "Últimas unidades",
+      description: "Potencia y duración excepcional para todo el día",
+      longDescription: "Con 40,000 puffs, el SWF 3tk es el compañero perfecto para usuarios intensivos.",
+      isFeatured: true
+    },
+    {
+      _id: '3',
+      name: "Death Row 7k",
+      price: 10.50,
+      rating: 4.3,
+      reviews: 156,
+      stock: "Disponible",
+      specs: {
+        puffs: "7K",
+        nicotineLevel: "50MG",
+        liquidVolume: "12ML",
+        functions: "STANDARD"
+      },
+      availableColors: 6,
+      imageUrls: ["https://images.unsplash.com/photo-1609006398915-f0271d3b4d9f?w=800&h=800&fit=crop"],
+      badge: null,
+      description: "Compacto y potente, ideal para llevar a todas partes",
+      longDescription: "Death Row 7k combina portabilidad con rendimiento.",
+      isFeatured: true
+    },
+    {
+      _id: '4',
+      name: "Lost Mary Turbo 35k",
+      price: 32.00,
+      rating: 5.0,
+      reviews: 203,
+      stock: "Disponible",
+      specs: {
+        puffs: "35K",
+        nicotineLevel: "50MG",
+        liquidVolume: "22ML",
+        functions: "TURBO/NORMAL"
+      },
+      availableColors: 8,
+      imageUrls: ["https://images.unsplash.com/photo-1590508969892-02fcc63dc1f2?w=800&h=800&fit=crop"],
+      badge: "NUEVO",
+      description: "La última innovación en tecnología de vapeo",
+      longDescription: "Lost Mary Turbo revoluciona el mercado con su modo turbo.",
+      isFeatured: true
+    },
+    {
+      _id: '5',
+      name: "Vozol Star 8K",
+      price: 25.00,
+      rating: 4.6,
+      reviews: 67,
+      stock: "Disponible",
+      specs: {
+        puffs: "8K",
+        nicotineLevel: "35MG",
+        liquidVolume: "14ML",
+        functions: "ECO MODE"
+      },
+      availableColors: 5,
+      imageUrls: ["https://images.unsplash.com/photo-1609006398633-b8e8c6a8f5f1?w=800&h=800&fit=crop"],
+      badge: null,
+      description: "Elegancia y eficiencia en un solo dispositivo",
+      longDescription: "Vozol Star 8K destaca por su diseño elegante.",
+      isFeatured: true
+    },
+    {
+      _id: '6',
+      name: "Hidden Hills Vape 2 GR",
+      price: 30.00,
+      originalPrice: 32.00,
+      rating: 4.7,
+      reviews: 45,
+      stock: "Disponible",
+      specs: {
+        puffs: "15K",
+        nicotineLevel: "50MG",
+        liquidVolume: "16ML",
+        functions: "PREMIUM"
+      },
+      availableColors: 4,
+      imageUrls: ["https://images.unsplash.com/photo-1609006398915-f0271d3b4d9f?w=800&h=800&fit=crop"],
+      badge: null,
+      description: "Concentrado premium de 2 gramos de pura calidad",
+      longDescription: "Hidden Hills ofrece una experiencia premium.",
+      isFeatured: true
+    }
+  ];
 
-    fetchProducts();
-  }, []);
-
-  // Productos de ejemplo (fallback)
-  const loadExampleProducts = () => {
-    const exampleProducts = [
-      {
-        _id: '1',
-        name: "Dozo THC-P Sugar Sauce 5 GR",
-        slug: "dozo-thc-p-sugar-sauce-5gr",
-        price: 50.00,
-        rating: 4.5,
-        reviews: 24,
-        stock: "Disponible",
-        specs: {
-          puffs: "25K",
-          nicotineLevel: "50MG",
-          liquidVolume: "18ML",
-          functions: "MED/BOOST"
-        },
-        availableColors: 5,
-        imageUrls: ["https://images.unsplash.com/photo-1590508969892-02fcc63dc1f2?w=600&h=600&fit=crop"],
-        badge: "Últimas unidades",
-        description: "Experiencia premium de vapeo con tecnología avanzada",
-        longDescription: "El Dozo THC-P Sugar Sauce ofrece una experiencia de vapeo incomparable con su fórmula especial de 5 gramos.",
-        isFeatured: true
-      },
-      {
-        _id: '2',
-        name: "SWF 3tk 40K",
-        slug: "swf-3tk-40k",
-        price: 30.00,
-        rating: 4.8,
-        reviews: 89,
-        stock: "Disponible",
-        specs: {
-          puffs: "40K",
-          nicotineLevel: "35MG",
-          liquidVolume: "20ML",
-          functions: "DUAL MODE"
-        },
-        availableColors: 4,
-        imageUrls: ["https://images.unsplash.com/photo-1609006398633-b8e8c6a8f5f1?w=600&h=600&fit=crop"],
-        badge: "Últimas unidades",
-        description: "Potencia y duración excepcional para todo el día",
-        longDescription: "Con 40,000 puffs, el SWF 3tk es el compañero perfecto para usuarios intensivos.",
-        isFeatured: true
-      },
-      {
-        _id: '3',
-        name: "Death Row 7k",
-        slug: "death-row-7k",
-        price: 10.50,
-        rating: 4.3,
-        reviews: 156,
-        stock: "Disponible",
-        specs: {
-          puffs: "7K",
-          nicotineLevel: "50MG",
-          liquidVolume: "12ML",
-          functions: "STANDARD"
-        },
-        availableColors: 6,
-        imageUrls: ["https://images.unsplash.com/photo-1609006398915-f0271d3b4d9f?w=600&h=600&fit=crop"],
-        badge: null,
-        description: "Compacto y potente, ideal para llevar a todas partes",
-        longDescription: "Death Row 7k combina portabilidad con rendimiento.",
-        isFeatured: true
-      },
-      {
-        _id: '4',
-        name: "Lost MaryTurbo 35k",
-        slug: "lost-maryturbo-35k",
-        price: 32.00,
-        rating: 5.0,
-        reviews: 203,
-        stock: "Disponible",
-        specs: {
-          puffs: "35K",
-          nicotineLevel: "50MG",
-          liquidVolume: "22ML",
-          functions: "TURBO/NORMAL"
-        },
-        availableColors: 8,
-        imageUrls: ["https://images.unsplash.com/photo-1590508969892-02fcc63dc1f2?w=600&h=600&fit=crop"],
-        badge: "NUEVO",
-        description: "La última innovación en tecnología de vapeo",
-        longDescription: "Lost Mary Turbo revoluciona el mercado con su modo turbo.",
-        isFeatured: true
-      },
-      {
-        _id: '5',
-        name: "Vozol Star 8K",
-        slug: "vozol-star-8k",
-        price: 25.00,
-        rating: 4.6,
-        reviews: 67,
-        stock: "Disponible",
-        specs: {
-          puffs: "8K",
-          nicotineLevel: "35MG",
-          liquidVolume: "14ML",
-          functions: "ECO MODE"
-        },
-        availableColors: 5,
-        imageUrls: ["https://images.unsplash.com/photo-1609006398633-b8e8c6a8f5f1?w=600&h=600&fit=crop"],
-        badge: null,
-        description: "Elegancia y eficiencia en un solo dispositivo",
-        longDescription: "Vozol Star 8K destaca por su diseño elegante.",
-        isFeatured: true
-      },
-      {
-        _id: '6',
-        name: "Hidden Hills Vape 2 GR",
-        slug: "hidden-hills-vape-2gr",
-        price: 30.00,
-        originalPrice: 32.00,
-        rating: 4.7,
-        reviews: 45,
-        stock: "Disponible",
-        specs: {
-          puffs: "15K",
-          nicotineLevel: "50MG",
-          liquidVolume: "16ML",
-          functions: "PREMIUM"
-        },
-        availableColors: 4,
-        imageUrls: ["https://images.unsplash.com/photo-1609006398915-f0271d3b4d9f?w=600&h=600&fit=crop"],
-        badge: null,
-        description: "Concentrado premium de 2 gramos de pura calidad",
-        longDescription: "Hidden Hills ofrece una experiencia premium.",
-        isFeatured: true
-      }
-    ];
-    setProducts(exampleProducts);
-    setFeaturedProducts(exampleProducts.filter(p => p.isFeatured));
-  };
+  const featuredProducts = products.filter(p => p.isFeatured);
 
   // Carrusel automático
   useEffect(() => {
     if (!isCarouselPaused && currentView === 'home' && featuredProducts.length > 0) {
       const interval = setInterval(() => {
         setCarouselIndex((prev) => (prev + 1) % featuredProducts.length);
-      }, 3000);
+      }, 4000);
       return () => clearInterval(interval);
     }
   }, [isCarouselPaused, currentView, featuredProducts.length]);
@@ -233,23 +196,11 @@ function App() {
     );
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-purple-500 mx-auto mb-4"></div>
-          <h2 className="text-white text-2xl font-bold">Cargando NEBULA...</h2>
-        </div>
-      </div>
-    );
-  }
-
   // VISTA DE DETALLE DEL PRODUCTO
   if (currentView === 'detail' && selectedProduct) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1557672172-298e090bd0f1?w=1920')] bg-cover bg-center"></div>
           <div className="absolute inset-0 bg-gradient-to-b from-purple-900/50 to-slate-900/90"></div>
         </div>
 
@@ -267,18 +218,18 @@ function App() {
                 <h1 className="text-2xl md:text-3xl font-bold text-white">NEBULA</h1>
                 <p className="text-purple-300 text-xs md:text-sm">Smoke Culture</p>
               </div>
-              <div className="w-24"></div>
+              <div className="w-20"></div>
             </div>
           </div>
         </nav>
 
         <div className="max-w-7xl mx-auto px-4 py-8 relative">
           <div className="grid md:grid-cols-2 gap-8">
-            <div className="bg-gradient-to-br from-purple-600/20 to-pink-600/20 backdrop-blur-lg rounded-3xl p-8 border border-purple-500/30">
+            <div className="bg-gradient-to-br from-purple-600/20 to-pink-600/20 backdrop-blur-lg rounded-3xl p-4 md:p-8 border border-purple-500/30">
               <img
-                src={selectedProduct.imageUrls?.[0] || selectedProduct.image}
+                src={selectedProduct.imageUrls?.[0]}
                 alt={selectedProduct.name}
-                className="w-full h-96 object-cover rounded-2xl shadow-2xl"
+                className="w-full h-64 md:h-96 object-cover rounded-2xl shadow-2xl"
               />
             </div>
 
@@ -291,7 +242,7 @@ function App() {
                     {selectedProduct.badge}
                   </span>
                 )}
-                <h1 className="text-4xl font-bold text-white mb-2">{selectedProduct.name}</h1>
+                <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">{selectedProduct.name}</h1>
                 <div className="flex items-center gap-4">
                   {renderStars(selectedProduct.rating, false, 20)}
                   <span className="text-gray-300">({selectedProduct.reviews} reseñas)</span>
@@ -334,7 +285,7 @@ function App() {
                     </div>
                     <div>
                       <p className="text-gray-400 text-sm">FUNCIONES</p>
-                      <p className="text-white font-bold">{selectedProduct.specs.functions}</p>
+                      <p className="text-white font-bold text-sm">{selectedProduct.specs.functions}</p>
                     </div>
                   </div>
                 </div>
@@ -346,10 +297,10 @@ function App() {
                     {selectedProduct.originalPrice && (
                       <p className="text-gray-400 line-through text-lg">${selectedProduct.originalPrice.toFixed(2)}</p>
                     )}
-                    <p className="text-5xl font-bold text-white">${selectedProduct.price.toFixed(2)}</p>
+                    <p className="text-4xl md:text-5xl font-bold text-white">${selectedProduct.price.toFixed(2)}</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-gray-400 text-sm">Colores disponibles</p>
+                    <p className="text-gray-400 text-sm">Colores</p>
                     <p className="text-white font-bold text-2xl">{selectedProduct.availableColors}</p>
                   </div>
                 </div>
@@ -375,7 +326,7 @@ function App() {
                   {renderStars(0, true, 32)}
                   {userRating > 0 && (
                     <span className="text-purple-300 font-semibold">
-                      {userRating} de 5 estrellas
+                      {userRating} de 5
                     </span>
                   )}
                 </div>
@@ -403,7 +354,6 @@ function App() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">
       <div className="absolute inset-0 opacity-10">
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1557672172-298e090bd0f1?w=1920')] bg-cover bg-center bg-fixed"></div>
         <div className="absolute inset-0 bg-gradient-to-b from-purple-900/50 to-slate-900/90"></div>
       </div>
 
@@ -411,8 +361,8 @@ function App() {
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-3xl font-bold text-white">NEBULA</h1>
-              <p className="text-purple-300 text-sm">Smoke Culture</p>
+              <h1 className="text-2xl md:text-3xl font-bold text-white">NEBULA</h1>
+              <p className="text-purple-300 text-xs md:text-sm">Smoke Culture</p>
             </div>
             <div className="hidden md:flex gap-6 text-white">
               <a href="#" className="hover:text-purple-400 transition font-semibold">Home</a>
@@ -425,8 +375,8 @@ function App() {
       </nav>
 
       <div className="relative">
-        <div className="max-w-7xl mx-auto px-4 py-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-8 text-center">
+        <div className="max-w-7xl mx-auto px-4 py-8 md:py-12">
+          <h2 className="text-2xl md:text-4xl font-bold text-white mb-6 md:mb-8 text-center">
             Productos Destacados
           </h2>
           
@@ -436,26 +386,26 @@ function App() {
               onMouseEnter={() => setIsCarouselPaused(true)}
               onMouseLeave={() => setIsCarouselPaused(false)}
             >
-              <div className="overflow-hidden rounded-3xl">
+              <div className="overflow-hidden rounded-2xl md:rounded-3xl">
                 <div 
                   className="flex transition-transform duration-500 ease-in-out"
                   style={{ transform: `translateX(-${carouselIndex * 100}%)` }}
                 >
                   {featuredProducts.map((product) => (
-                    <div key={product._id} className="w-full flex-shrink-0 px-2">
+                    <div key={product._id} className="w-full flex-shrink-0">
                       <div 
                         onClick={() => handleProductClick(product)}
-                        className="bg-white bg-opacity-10 backdrop-blur-lg rounded-3xl overflow-hidden border-2 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer transform hover:scale-105 duration-300"
+                        className="bg-white bg-opacity-10 backdrop-blur-lg rounded-2xl md:rounded-3xl overflow-hidden border-2 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer mx-2 md:mx-0"
                       >
-                        <div className="grid md:grid-cols-2 gap-8 p-8">
-                          <div className="relative">
+                        <div className="flex flex-col md:grid md:grid-cols-2 gap-4 md:gap-8 p-4 md:p-8">
+                          <div className="relative w-full">
                             <img
-                              src={product.imageUrls?.[0] || product.image}
+                              src={product.imageUrls?.[0]}
                               alt={product.name}
-                              className="w-full h-96 object-cover rounded-2xl shadow-2xl"
+                              className="w-full h-64 md:h-96 object-cover rounded-xl md:rounded-2xl shadow-2xl"
                             />
                             {product.badge && (
-                              <div className={`absolute top-4 right-4 px-4 py-2 rounded-full text-sm font-bold ${
+                              <div className={`absolute top-3 right-3 md:top-4 md:right-4 px-3 py-1 md:px-4 md:py-2 rounded-full text-xs md:text-sm font-bold ${
                                 product.badge === 'NUEVO' ? 'bg-red-500 text-white' : 'bg-yellow-400 text-black'
                               }`}>
                                 {product.badge}
@@ -463,23 +413,23 @@ function App() {
                             )}
                           </div>
                           <div className="flex flex-col justify-center">
-                            <h3 className="text-3xl md:text-4xl font-bold text-white mb-4">{product.name}</h3>
-                            <div className="flex items-center gap-3 mb-4">
-                              {renderStars(product.rating, false, 24)}
-                              <span className="text-gray-300 text-lg">({product.reviews})</span>
+                            <h3 className="text-2xl md:text-4xl font-bold text-white mb-3 md:mb-4">{product.name}</h3>
+                            <div className="flex items-center gap-2 md:gap-3 mb-3 md:mb-4">
+                              {renderStars(product.rating, false, window.innerWidth < 768 ? 18 : 24)}
+                              <span className="text-gray-300 text-sm md:text-lg">({product.reviews})</span>
                             </div>
-                            <p className="text-gray-300 text-lg mb-6">{product.description}</p>
-                            <div className="flex items-center gap-6 mb-6">
-                              <div className="text-5xl font-bold text-white">${product.price.toFixed(2)}</div>
-                              <div className="text-green-400 font-semibold">{product.stock}</div>
+                            <p className="text-gray-300 text-sm md:text-lg mb-4 md:mb-6">{product.description}</p>
+                            <div className="flex items-center gap-4 md:gap-6 mb-4 md:mb-6">
+                              <div className="text-3xl md:text-5xl font-bold text-white">${product.price.toFixed(2)}</div>
+                              <div className="text-green-400 font-semibold text-sm md:text-base">{product.stock}</div>
                             </div>
-                            <div className="grid grid-cols-2 gap-3 text-sm">
+                            <div className="grid grid-cols-2 gap-2 md:gap-3 text-xs md:text-sm">
                               <div className="flex items-center gap-2 text-purple-300">
-                                <Zap size={18} />
+                                <Zap size={16} />
                                 <span>{product.specs.puffs} Puffs</span>
                               </div>
                               <div className="flex items-center gap-2 text-purple-300">
-                                <Droplets size={18} />
+                                <Droplets size={16} />
                                 <span>{product.specs.liquidVolume}</span>
                               </div>
                             </div>
@@ -493,18 +443,18 @@ function App() {
 
               <button
                 onClick={prevSlide}
-                className="absolute left-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-80 text-white p-3 rounded-full transition-all"
+                className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-80 text-white p-2 md:p-3 rounded-full transition-all"
               >
-                <ChevronLeft size={32} />
+                <ChevronLeft size={24} className="md:w-8 md:h-8" />
               </button>
               <button
                 onClick={nextSlide}
-                className="absolute right-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-80 text-white p-3 rounded-full transition-all"
+                className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-80 text-white p-2 md:p-3 rounded-full transition-all"
               >
-                <ChevronRight size={32} />
+                <ChevronRight size={24} className="md:w-8 md:h-8" />
               </button>
 
-              <div className="flex justify-center gap-2 mt-6">
+              <div className="flex justify-center gap-2 mt-4 md:mt-6">
                 {featuredProducts.map((_, index) => (
                   <button
                     key={index}
@@ -519,40 +469,40 @@ function App() {
           )}
         </div>
 
-        <div id="productos" className="max-w-7xl mx-auto px-4 py-12">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+        <div id="productos" className="max-w-7xl mx-auto px-4 py-8 md:py-12">
+          <div className="text-center mb-8 md:mb-12">
+            <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
               Todos los productos
             </h2>
-            <p className="text-gray-300 text-lg mb-6 max-w-3xl mx-auto">
+            <p className="text-gray-300 text-sm md:text-lg mb-6 max-w-3xl mx-auto px-4">
               Descubre nuestra selección de vapes: la opción moderna y segura para disfrutar. 
               Explora sabores únicos y elige el dispositivo ideal.
             </p>
-            <div className="flex flex-wrap justify-center gap-4 text-sm">
-              <span className="bg-purple-600 text-white px-4 py-2 rounded-full">
+            <div className="flex flex-wrap justify-center gap-3 md:gap-4 text-xs md:text-sm">
+              <span className="bg-purple-600 text-white px-3 md:px-4 py-2 rounded-full">
                 {products.length} productos
               </span>
-              <span className="bg-white text-purple-900 px-4 py-2 rounded-full font-semibold">
+              <span className="bg-white text-purple-900 px-3 md:px-4 py-2 rounded-full font-semibold">
                 Marcas Recomendadas
               </span>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {products.map((product) => (
               <div
                 key={product._id}
                 onClick={() => handleProductClick(product)}
                 className="bg-white bg-opacity-10 backdrop-blur-lg rounded-2xl overflow-hidden border border-purple-500/20 hover:border-purple-500/50 transition-all duration-300 transform hover:scale-105 cursor-pointer"
               >
-                <div className="relative h-64 bg-gradient-to-br from-purple-600 to-pink-600 overflow-hidden">
+                <div className="relative h-48 md:h-64 bg-gradient-to-br from-purple-600 to-pink-600 overflow-hidden">
                   <img
-                    src={product.imageUrls?.[0] || product.image}
+                    src={product.imageUrls?.[0]}
                     alt={product.name}
                     className="w-full h-full object-cover opacity-80"
                   />
                   {product.badge && (
-                    <div className={`absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold ${
+                    <div className={`absolute top-3 right-3 md:top-4 md:right-4 px-2 md:px-3 py-1 rounded-full text-xs font-bold ${
                       product.badge === 'NUEVO' ? 'bg-red-500 text-white' : 'bg-yellow-400 text-black'
                     }`}>
                       {product.badge}
@@ -560,12 +510,12 @@ function App() {
                   )}
                 </div>
 
-                <div className="p-6">
-                  <h3 className="text-xl font-bold text-white mb-2">{product.name}</h3>
+                <div className="p-4 md:p-6">
+                  <h3 className="text-lg md:text-xl font-bold text-white mb-2">{product.name}</h3>
                   
                   <div className="flex justify-between items-center mb-3">
                     {renderStars(product.rating)}
-                    <span className="text-green-400 text-sm font-semibold">{product.stock}</span>
+                    <span className="text-green-400 text-xs md:text-sm font-semibold">{product.stock}</span>
                   </div>
 
                   <div className="grid grid-cols-2 gap-2 mb-4 text-xs">
@@ -582,11 +532,11 @@ function App() {
                   <div className="flex items-center justify-between">
                     <div>
                       {product.originalPrice && (
-                        <span className="text-gray-400 line-through text-sm">${product.originalPrice.toFixed(2)}</span>
+                        <span className="text-gray-400 line-through text-xs md:text-sm">${product.originalPrice.toFixed(2)}</span>
                       )}
-                      <div className="text-3xl font-bold text-white">${product.price.toFixed(2)}</div>
+                      <div className="text-2xl md:text-3xl font-bold text-white">${product.price.toFixed(2)}</div>
                     </div>
-                    <div className="text-purple-300 text-sm">Ver detalles →</div>
+                    <div className="text-purple-300 text-xs md:text-sm">Ver detalles →</div>
                   </div>
                 </div>
               </div>
@@ -599,17 +549,17 @@ function App() {
         href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hola%20NEBULA,%20estoy%20interesado/a%20en%20sus%20productos.`}
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-all z-50"
+        className="fixed bottom-4 right-4 md:bottom-6 md:right-6 bg-green-500 hover:bg-green-600 text-white p-3 md:p-4 rounded-full shadow-2xl hover:scale-110 transition-all z-50"
       >
-        <MessageCircle size={32} />
+        <MessageCircle size={28} className="md:w-8 md:h-8" />
       </a>
 
-      <footer className="bg-black bg-opacity-50 backdrop-blur-md mt-16 border-t border-purple-500/20 relative">
-        <div className="max-w-7xl mx-auto px-4 py-8 text-center text-gray-300">
-          <h3 className="text-2xl font-bold text-white mb-2">NEBULA</h3>
+      <footer className="bg-black bg-opacity-50 backdrop-blur-md mt-12 md:mt-16 border-t border-purple-500/20 relative">
+        <div className="max-w-7xl mx-auto px-4 py-6 md:py-8 text-center text-gray-300">
+          <h3 className="text-xl md:text-2xl font-bold text-white mb-2">NEBULA</h3>
           <p className="text-purple-300 mb-4">Smoke Culture</p>
-          <p className="text-sm">© 2024 NEBULA. Todos los derechos reservados.</p>
-          <div className="flex justify-center gap-4 mt-4">
+          <p className="text-xs md:text-sm">© 2024 NEBULA. Todos los derechos reservados.</p>
+          <div className="flex justify-center gap-4 mt-4 text-sm">
             <a href="#" className="hover:text-purple-400 transition">Instagram</a>
             <a href="#" className="hover:text-purple-400 transition">Facebook</a>
             <a href="#" className="hover:text-purple-400 transition">TikTok</a>
@@ -621,4 +571,3 @@ function App() {
 }
 
 export default App;
-
