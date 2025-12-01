@@ -25,16 +25,30 @@ function App() {
       try {
         setLoading(true);
         setError(null);
+        
+        console.log('🔄 Iniciando carga de productos desde el backend...');
+        console.log('📍 URL del API:', process.env.REACT_APP_API_URL || 'https://nebula2-0.onrender.com');
+        
         const response = await productService.getAllProducts();
+        
+        console.log('✅ Respuesta recibida del backend:', response);
         
         // El backend devuelve { success: true, data: products }
         if (response.success && response.data) {
+          console.log(`✅ ${response.data.length} productos cargados desde MongoDB`);
           setProducts(response.data);
         } else {
+          console.warn('⚠️ Respuesta del backend sin datos:', response);
           setError('No se pudieron cargar los productos');
         }
       } catch (err) {
-        console.error('Error al cargar productos:', err);
+        console.error('❌ Error al cargar productos:', err);
+        console.error('❌ Detalles del error:', {
+          message: err.message,
+          response: err.response?.data,
+          status: err.response?.status,
+          url: err.config?.url
+        });
         setError('Error al conectar con el servidor. Verifica que el backend esté funcionando.');
       } finally {
         setLoading(false);
@@ -245,6 +259,16 @@ function App() {
   // Usar productos del backend, o fallback si hay error
   const displayProducts = products.length > 0 ? products : (error ? fallbackProducts : []);
   const featuredProducts = displayProducts.filter(p => p.isFeatured);
+  
+  // Debug: mostrar información en consola
+  useEffect(() => {
+    if (products.length > 0) {
+      console.log('✅ Productos del backend cargados:', products.length);
+      console.log('📋 Primer producto:', products[0]);
+    } else if (error) {
+      console.warn('⚠️ Usando productos fallback debido a error');
+    }
+  }, [products, error]);
 
   useEffect(() => {
     if (!isCarouselPaused && currentView === 'home' && featuredProducts.length > 0) {
@@ -386,11 +410,14 @@ function App() {
                 <div className="relative w-full h-96 flex items-center justify-center">
                   <img
                     key={selectedImageIndex}
-                    src={selectedProduct.imageUrls?.[selectedImageIndex] || selectedProduct.imageUrls?.[0] || selectedProduct.image}
-                    alt={selectedProduct.name}
+                    src={selectedProduct.imageUrls?.[selectedImageIndex] || selectedProduct.imageUrls?.[0] || selectedProduct.image || ''}
+                    alt={selectedProduct.name || 'Producto'}
                     className={`max-w-full max-h-full object-contain rounded-2xl shadow-2xl transition-all duration-500 transform ${
                       imageTransition ? 'opacity-0 scale-95 blur-sm' : 'opacity-100 scale-100 blur-0'
                     }`}
+                    onError={(e) => {
+                      e.target.style.display = 'none';
+                    }}
                   />
                 </div>
               </div>
@@ -410,10 +437,13 @@ function App() {
                       <div className="relative overflow-hidden rounded-lg">
                         <img
                           src={imageUrl}
-                          alt={`${selectedProduct.name} - Vista ${index + 1}`}
+                          alt={`${selectedProduct.name || 'Producto'} - Vista ${index + 1}`}
                           className={`w-full h-20 object-cover transition-all duration-300 ${
                             selectedImageIndex === index ? '' : 'group-hover:scale-110 group-hover:brightness-110'
                           }`}
+                          onError={(e) => {
+                            e.target.style.display = 'none';
+                          }}
                         />
                         <div className={`absolute inset-0 bg-gradient-to-t from-purple-600/40 to-transparent transition-opacity duration-300 ${
                           selectedImageIndex === index ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
@@ -444,42 +474,50 @@ function App() {
               <div className="bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-purple-500/20">
                 <h3 className="text-xl font-bold text-white mb-4">CARACTERÍSTICAS</h3>
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="flex items-center gap-3">
-                    <div className="bg-purple-500/30 p-3 rounded-lg">
-                      <Zap className="text-yellow-400" size={24} />
+                  {selectedProduct.specs?.puffs && (
+                    <div className="flex items-center gap-3">
+                      <div className="bg-purple-500/30 p-3 rounded-lg">
+                        <Zap className="text-yellow-400" size={24} />
+                      </div>
+                      <div>
+                        <p className="text-gray-400 text-sm">PUFFS</p>
+                        <p className="text-white font-bold">{selectedProduct.specs.puffs}</p>
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-gray-400 text-sm">PUFFS</p>
-                      <p className="text-white font-bold">{selectedProduct.specs.puffs}</p>
+                  )}
+                  {selectedProduct.specs?.nicotineLevel && (
+                    <div className="flex items-center gap-3">
+                      <div className="bg-purple-500/30 p-3 rounded-lg">
+                        <Package className="text-blue-400" size={24} />
+                      </div>
+                      <div>
+                        <p className="text-gray-400 text-sm">NICOTINA</p>
+                        <p className="text-white font-bold">{selectedProduct.specs.nicotineLevel}</p>
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className="bg-purple-500/30 p-3 rounded-lg">
-                      <Package className="text-blue-400" size={24} />
+                  )}
+                  {selectedProduct.specs?.liquidVolume && (
+                    <div className="flex items-center gap-3">
+                      <div className="bg-purple-500/30 p-3 rounded-lg">
+                        <Droplets className="text-cyan-400" size={24} />
+                      </div>
+                      <div>
+                        <p className="text-gray-400 text-sm">LÍQUIDO</p>
+                        <p className="text-white font-bold">{selectedProduct.specs.liquidVolume}</p>
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-gray-400 text-sm">NICOTINA</p>
-                      <p className="text-white font-bold">{selectedProduct.specs.nicotineLevel}</p>
+                  )}
+                  {selectedProduct.specs?.functions && (
+                    <div className="flex items-center gap-3">
+                      <div className="bg-purple-500/30 p-3 rounded-lg">
+                        <span className="text-2xl">⚡</span>
+                      </div>
+                      <div>
+                        <p className="text-gray-400 text-sm">FUNCIONES</p>
+                        <p className="text-white font-bold">{selectedProduct.specs.functions}</p>
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className="bg-purple-500/30 p-3 rounded-lg">
-                      <Droplets className="text-cyan-400" size={24} />
-                    </div>
-                    <div>
-                      <p className="text-gray-400 text-sm">LÍQUIDO</p>
-                      <p className="text-white font-bold">{selectedProduct.specs.liquidVolume}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className="bg-purple-500/30 p-3 rounded-lg">
-                      <span className="text-2xl">⚡</span>
-                    </div>
-                    <div>
-                      <p className="text-gray-400 text-sm">FUNCIONES</p>
-                      <p className="text-white font-bold">{selectedProduct.specs.functions}</p>
-                    </div>
-                  </div>
+                  )}
                 </div>
               </div>
 
@@ -616,14 +654,18 @@ function App() {
                               <div className="text-green-400 font-semibold">{product.stock}</div>
                             </div>
                             <div className="grid grid-cols-2 gap-3 text-sm">
-                              <div className="flex items-center gap-2 text-purple-300">
-                                <Zap size={18} />
-                                <span>{product.specs.puffs} Puffs</span>
-                              </div>
-                              <div className="flex items-center gap-2 text-purple-300">
-                                <Droplets size={18} />
-                                <span>{product.specs.liquidVolume}</span>
-                              </div>
+                              {product.specs?.puffs && (
+                                <div className="flex items-center gap-2 text-purple-300">
+                                  <Zap size={18} />
+                                  <span>{product.specs.puffs} Puffs</span>
+                                </div>
+                              )}
+                              {product.specs?.liquidVolume && (
+                                <div className="flex items-center gap-2 text-purple-300">
+                                  <Droplets size={18} />
+                                  <span>{product.specs.liquidVolume}</span>
+                                </div>
+                              )}
                             </div>
                           </div>
                         </div>
@@ -711,14 +753,18 @@ function App() {
                   </div>
 
                   <div className="grid grid-cols-2 gap-2 mb-4 text-xs">
-                    <div className="flex items-center gap-1 text-purple-300">
-                      <Zap size={14} />
-                      <span>{product.specs.puffs}</span>
-                    </div>
-                    <div className="flex items-center gap-1 text-purple-300">
-                      <Droplets size={14} />
-                      <span>{product.specs.liquidVolume}</span>
-                    </div>
+                    {product.specs?.puffs && (
+                      <div className="flex items-center gap-1 text-purple-300">
+                        <Zap size={14} />
+                        <span>{product.specs.puffs}</span>
+                      </div>
+                    )}
+                    {product.specs?.liquidVolume && (
+                      <div className="flex items-center gap-1 text-purple-300">
+                        <Droplets size={14} />
+                        <span>{product.specs.liquidVolume}</span>
+                      </div>
+                    )}
                   </div>
 
                   <div className="flex items-end justify-between">

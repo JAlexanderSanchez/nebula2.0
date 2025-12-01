@@ -10,7 +10,7 @@ const products = [
   {
     name: "Fume x Fruitia Vape Desechable 8000 Puffs, 5% Nicotina",
     slug: "fume-x-fruitia-desechable-8000-puffs",
-    price: 12,
+    price: 12.00,
     originalPrice: null,
     description: "Vape desechable de alto rendimiento con bobina de malla y pantalla LED.",
     longDescription: "El Fume x Fruitia 8000 Puffs es un dispositivo de vapeo desechable y recargable que combina potencia y sabor. Ofrece más de 8000 caladas con 5% de nicotina, 17 ml de e-líquido, batería recargable (700 mAh) y pantalla LED para monitorear niveles.",
@@ -37,7 +37,7 @@ const products = [
   {
     name: "Death Row Vapes 7000 Puffs - Blue Razz",
     slug: "death-row-vapes-7000-blue-razz",
-    price: 10,
+    price: 10.00,
     originalPrice: null,
     description: "Vape desechable Death Row (Snoop Dogg) con tecnología de malla y batería recargable, sabor Blue Razz.",
     longDescription: "Dispositivo desechable y recargable que ofrece hasta 7000 caladas. Contiene 12 ml de e-líquido con 5% de sal de nicotina y una batería de 700 mAh recargable por USB-C. El sabor Blue Razz combina mora azul con un toque fresco.",
@@ -64,7 +64,7 @@ const products = [
   {
     name: "Yogi Bar 8000 Puffs - Varios sabores - 5% Nicotina",
     slug: "yogi-bar-8000",
-    price: 9,
+    price: 9.00,
     originalPrice: null,
     description: "Vape desechable Yogi Bar con el galardonado e-líquido de barra de granola de fresa.",
     longDescription: "Dispositivo desechable recargable de la marca Yogi E-Liquid. Ofrece hasta 8000 caladas, 17ml de e-líquido de 5% de nicotina y una batería recargable de 600mAh. Sabor a dulce y madura fresa combinada con la dulzura natural.",
@@ -91,7 +91,7 @@ const products = [
   {
     name: "Flavor Vapes 6000 Puffs - Cool Mint",
     slug: "flavor-vapes-6000-cool-mint",
-    price: 10,
+    price: 10.00,
     originalPrice: null,
     description: "Vape desechable Flavor Vapes con diseño compacto y 6000 caladas garantizadas, sabor menta fría.",
     longDescription: "Un dispositivo desechable de alto rendimiento con 13ml de e-líquido y 5% de nicotina. Cuenta con una batería recargable vía USB-C y bobina Mesh para una producción de vapor consistente. El sabor Cool Mint ofrece una sensación limpia y refrescante de menta.",
@@ -117,7 +117,7 @@ const products = [
   {
     name: "Strio Vapes XC6500 Puffs - 5% de Nicotina",
     slug: "strio-vapes-xc6500-blue-razz-ice",
-    price: 14,
+    price: 14.00,
     originalPrice: null,
     description: "Vape desechable Strio XC, recargable y con un diseño ergonómico, sabor mora azul helada.",
     longDescription: "El Strio XC ofrece aproximadamente 6500 caladas con 12ml de e-líquido de sal de nicotina al 5%. Refrescante.",
@@ -143,7 +143,7 @@ const products = [
   {
     name: "UWELL Vapes 12000 Puffs - Watermelon Ice",
     slug: "uwell-vapes-12000-watermelon-ice",
-    price: 18,
+    price: 18.00,
     originalPrice: null,
     description: "Vape desechable UWELL de ultra alta capacidad con tecnología de doble malla y 12000 caladas.",
     longDescription: "Dispositivo desechable insignia de UWELL, diseñado para longevidad y sabor intenso. Ofrece hasta 12000 caladas, 5% de nicotina y una batería recargable de larga duración. Su bobina dual asegura que cada calada sea potente. Sabor: Sandía dulce con un acabado refrescante de hielo.",
@@ -222,25 +222,43 @@ const seedProducts = async () => {
       console.log('✓ Valores permitidos para badge:', schema.path('badge').enumValues);
     }
 
-    // Limpiar productos existentes (opcional - comentar si quieres mantener los existentes)
-    await Product.deleteMany({});
-    console.log('\n🗑️  Productos existentes eliminados');
+    // Verificar productos existentes
+    const existingProducts = await Product.find();
+    console.log(`\n📊 Productos existentes en MongoDB: ${existingProducts.length}`);
 
-    // Insertar productos uno por uno para mejor debugging
-    console.log('\n📦 Insertando productos...');
+    // Opción 1: Si quieres ELIMINAR todos y empezar de cero, descomenta la siguiente línea:
+    // await Product.deleteMany({});
+    // console.log('\n🗑️  Productos existentes eliminados');
+
+    // Opción 2: Insertar solo productos que NO existen (por slug)
+    console.log('\n📦 Insertando productos (solo los que no existen)...');
     const createdProducts = [];
+    const skippedProducts = [];
     
     for (let i = 0; i < products.length; i++) {
       try {
-        const product = await Product.create(products[i]);
-        createdProducts.push(product);
-        console.log(`✅ ${i + 1}. ${product.name} - ${product.price}`);
+        // Verificar si el producto ya existe por slug
+        const existingProduct = await Product.findOne({ slug: products[i].slug });
+        
+        if (existingProduct) {
+          skippedProducts.push(products[i].name);
+          console.log(`⏭️  ${i + 1}. ${products[i].name} - Ya existe, se omite`);
+        } else {
+          const product = await Product.create(products[i]);
+          createdProducts.push(product);
+          console.log(`✅ ${i + 1}. ${product.name} - ${product.price} - CREADO`);
+        }
       } catch (error) {
         console.error(`❌ Error en producto ${i + 1} (${products[i].name}):`, error.message);
       }
     }
 
     console.log(`\n✅ ${createdProducts.length} de ${products.length} productos creados exitosamente`);
+    if (skippedProducts.length > 0) {
+      console.log(`⏭️  ${skippedProducts.length} productos omitidos (ya existen):`);
+      skippedProducts.forEach(name => console.log(`   - ${name}`));
+    }
+    console.log(`\n📊 Total de productos en MongoDB ahora: ${existingProducts.length + createdProducts.length}`);
 
     process.exit(0);
   } catch (error) {

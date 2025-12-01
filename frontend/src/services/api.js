@@ -42,10 +42,21 @@ export const productService = {
   // Obtener todos los productos
   getAllProducts: async () => {
     try {
-      const response = await api.get('/api/products');
+      const url = '/api/products';
+      console.log('🌐 Haciendo petición a:', `${API_URL}${url}`);
+      const response = await api.get(url);
+      console.log('📦 Respuesta completa:', response);
+      console.log('📦 Datos recibidos:', response.data);
       return response.data;
     } catch (error) {
-      console.error('Error al obtener productos:', error);
+      console.error('❌ Error al obtener productos:', error);
+      if (error.response) {
+        console.error('❌ Status:', error.response.status);
+        console.error('❌ Data:', error.response.data);
+      }
+      if (error.request) {
+        console.error('❌ No se recibió respuesta. Verifica la URL:', error.config?.url);
+      }
       throw error;
     }
   },
