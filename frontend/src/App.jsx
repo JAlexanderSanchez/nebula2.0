@@ -1,11 +1,7 @@
-// App component
-
 import React, { useState, useEffect } from 'react';
 import { Star, MessageCircle, Package, Droplets, Zap, ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
-import axios from 'axios';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
-const WHATSAPP_NUMBER = process.env.REACT_APP_WHATSAPP_NUMBER || '59360249628';
+const WHATSAPP_NUMBER = '59360249628';
 
 function App() {
   const [currentView, setCurrentView] = useState('home');
@@ -14,167 +10,54 @@ function App() {
   const [isCarouselPaused, setIsCarouselPaused] = useState(false);
   const [userRating, setUserRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
-  const [products, setProducts] = useState([]);
-  const [featuredProducts, setFeaturedProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [imageTransition, setImageTransition] = useState(false);
 
-  // Cargar productos desde la API
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await axios.get(`${API_URL}/products`);
-        if (response.data.success) {
-          setProducts(response.data.data);
-          setFeaturedProducts(response.data.data.filter(p => p.isFeatured));
-        }
-      } catch (error) {
-        console.error('Error al cargar productos:', error);
-        // Usar productos de ejemplo si falla la API
-        loadExampleProducts();
-      } finally {
-        setLoading(false);
-      }
-    };
+  const products = [
+    {
+      _id: '1',
+      name: "Dozo THC-P Sugar Sauce 5 GR",
+      slug: "dozo-thc-p-sugar-sauce-5gr",
+      price: 50.00,
+      rating: 4.5,
+      reviews: 24,
+      stock: "Disponible",
+      specs: { puffs: "25K", nicotineLevel: "50MG", liquidVolume: "18ML", functions: "MED/BOOST" },
+      availableColors: 5,
+      imageUrls: [
+        "https://images.unsplash.com/photo-1590508969892-02fcc63dc1f2?w=600&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1609006398633-b8e8c6a8f5f1?w=600&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1609006398915-f0271d3b4d9f?w=600&h=600&fit=crop"
+      ],
+      badge: "Últimas unidades",
+      description: "Experiencia premium de vapeo con tecnología avanzada",
+      longDescription: "El Dozo THC-P Sugar Sauce ofrece una experiencia de vapeo incomparable con su fórmula especial de 5 gramos.",
+      isFeatured: true
+    },
+    {
+      _id: '2',
+      name: "SWF 3tk 40K",
+      slug: "swf-3tk-40k",
+      price: 30.00,
+      rating: 4.8,
+      reviews: 89,
+      stock: "Disponible",
+      specs: { puffs: "40K", nicotineLevel: "35MG", liquidVolume: "20ML", functions: "DUAL MODE" },
+      availableColors: 4,
+      imageUrls: [
+        "https://images.unsplash.com/photo-1609006398633-b8e8c6a8f5f1?w=600&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1590508969892-02fcc63dc1f2?w=600&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1557672172-298e090bd0f1?w=600&h=600&fit=crop"
+      ],
+      badge: "Últimas unidades",
+      description: "Potencia y duración excepcional para todo el día",
+      longDescription: "Con 40,000 puffs, el SWF 3tk es el compañero perfecto para usuarios intensivos.",
+      isFeatured: true
+    }
+  ];
 
-    fetchProducts();
-  }, []);
+  const featuredProducts = products.filter(p => p.isFeatured);
 
-  // Productos de ejemplo (fallback)
-  const loadExampleProducts = () => {
-    const exampleProducts = [
-      {
-        _id: '1',
-        name: "Dozo THC-P Sugar Sauce 5 GR",
-        slug: "dozo-thc-p-sugar-sauce-5gr",
-        price: 50.00,
-        rating: 4.5,
-        reviews: 24,
-        stock: "Disponible",
-        specs: {
-          puffs: "25K",
-          nicotineLevel: "50MG",
-          liquidVolume: "18ML",
-          functions: "MED/BOOST"
-        },
-        availableColors: 5,
-        imageUrls: ["https://images.unsplash.com/photo-1590508969892-02fcc63dc1f2?w=600&h=600&fit=crop"],
-        badge: "Últimas unidades",
-        description: "Experiencia premium de vapeo con tecnología avanzada",
-        longDescription: "El Dozo THC-P Sugar Sauce ofrece una experiencia de vapeo incomparable con su fórmula especial de 5 gramos.",
-        isFeatured: true
-      },
-      {
-        _id: '2',
-        name: "SWF 3tk 40K",
-        slug: "swf-3tk-40k",
-        price: 30.00,
-        rating: 4.8,
-        reviews: 89,
-        stock: "Disponible",
-        specs: {
-          puffs: "40K",
-          nicotineLevel: "35MG",
-          liquidVolume: "20ML",
-          functions: "DUAL MODE"
-        },
-        availableColors: 4,
-        imageUrls: ["https://images.unsplash.com/photo-1609006398633-b8e8c6a8f5f1?w=600&h=600&fit=crop"],
-        badge: "Últimas unidades",
-        description: "Potencia y duración excepcional para todo el día",
-        longDescription: "Con 40,000 puffs, el SWF 3tk es el compañero perfecto para usuarios intensivos.",
-        isFeatured: true
-      },
-      {
-        _id: '3',
-        name: "Death Row 7k",
-        slug: "death-row-7k",
-        price: 10.50,
-        rating: 4.3,
-        reviews: 156,
-        stock: "Disponible",
-        specs: {
-          puffs: "7K",
-          nicotineLevel: "50MG",
-          liquidVolume: "12ML",
-          functions: "STANDARD"
-        },
-        availableColors: 6,
-        imageUrls: ["https://images.unsplash.com/photo-1609006398915-f0271d3b4d9f?w=600&h=600&fit=crop"],
-        badge: null,
-        description: "Compacto y potente, ideal para llevar a todas partes",
-        longDescription: "Death Row 7k combina portabilidad con rendimiento.",
-        isFeatured: true
-      },
-      {
-        _id: '4',
-        name: "Lost MaryTurbo 35k",
-        slug: "lost-maryturbo-35k",
-        price: 32.00,
-        rating: 5.0,
-        reviews: 203,
-        stock: "Disponible",
-        specs: {
-          puffs: "35K",
-          nicotineLevel: "50MG",
-          liquidVolume: "22ML",
-          functions: "TURBO/NORMAL"
-        },
-        availableColors: 8,
-        imageUrls: ["https://images.unsplash.com/photo-1590508969892-02fcc63dc1f2?w=600&h=600&fit=crop"],
-        badge: "NUEVO",
-        description: "La última innovación en tecnología de vapeo",
-        longDescription: "Lost Mary Turbo revoluciona el mercado con su modo turbo.",
-        isFeatured: true
-      },
-      {
-        _id: '5',
-        name: "Vozol Star 8K",
-        slug: "vozol-star-8k",
-        price: 25.00,
-        rating: 4.6,
-        reviews: 67,
-        stock: "Disponible",
-        specs: {
-          puffs: "8K",
-          nicotineLevel: "35MG",
-          liquidVolume: "14ML",
-          functions: "ECO MODE"
-        },
-        availableColors: 5,
-        imageUrls: ["https://images.unsplash.com/photo-1609006398633-b8e8c6a8f5f1?w=600&h=600&fit=crop"],
-        badge: null,
-        description: "Elegancia y eficiencia en un solo dispositivo",
-        longDescription: "Vozol Star 8K destaca por su diseño elegante.",
-        isFeatured: true
-      },
-      {
-        _id: '6',
-        name: "Hidden Hills Vape 2 GR",
-        slug: "hidden-hills-vape-2gr",
-        price: 30.00,
-        originalPrice: 32.00,
-        rating: 4.7,
-        reviews: 45,
-        stock: "Disponible",
-        specs: {
-          puffs: "15K",
-          nicotineLevel: "50MG",
-          liquidVolume: "16ML",
-          functions: "PREMIUM"
-        },
-        availableColors: 4,
-        imageUrls: ["https://images.unsplash.com/photo-1609006398915-f0271d3b4d9f?w=600&h=600&fit=crop"],
-        badge: null,
-        description: "Concentrado premium de 2 gramos de pura calidad",
-        longDescription: "Hidden Hills ofrece una experiencia premium.",
-        isFeatured: true
-      }
-    ];
-    setProducts(exampleProducts);
-    setFeaturedProducts(exampleProducts.filter(p => p.isFeatured));
-  };
-
-  // Carrusel automático
   useEffect(() => {
     if (!isCarouselPaused && currentView === 'home' && featuredProducts.length > 0) {
       const interval = setInterval(() => {
@@ -197,6 +80,7 @@ function App() {
     setCurrentView('detail');
     setUserRating(0);
     setHoverRating(0);
+    setSelectedImageIndex(0);
     window.scrollTo(0, 0);
   };
 
@@ -209,6 +93,18 @@ function App() {
   const handleWhatsAppClick = (productName) => {
     const message = encodeURIComponent(`Hola NEBULA, estoy interesado/a en el producto "${productName}" y me gustaría saber más.`);
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${message}`, '_blank');
+  };
+
+  const handleImageChange = (index) => {
+    if (index !== selectedImageIndex) {
+      setImageTransition(true);
+      setTimeout(() => {
+        setSelectedImageIndex(index);
+        setTimeout(() => {
+          setImageTransition(false);
+        }, 50);
+      }, 250);
+    }
   };
 
   const renderStars = (rating, interactive = false, size = 16) => {
@@ -233,18 +129,6 @@ function App() {
     );
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-purple-500 mx-auto mb-4"></div>
-          <h2 className="text-white text-2xl font-bold">Cargando NEBULA...</h2>
-        </div>
-      </div>
-    );
-  }
-
-  // VISTA DE DETALLE DEL PRODUCTO
   if (currentView === 'detail' && selectedProduct) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">
@@ -274,12 +158,48 @@ function App() {
 
         <div className="max-w-7xl mx-auto px-4 py-8 relative">
           <div className="grid md:grid-cols-2 gap-8">
-            <div className="bg-gradient-to-br from-purple-600/20 to-pink-600/20 backdrop-blur-lg rounded-3xl p-8 border border-purple-500/30">
-              <img
-                src={selectedProduct.imageUrls?.[0] || selectedProduct.image}
-                alt={selectedProduct.name}
-                className="w-full h-96 object-cover rounded-2xl shadow-2xl"
-              />
+            <div className="space-y-4">
+              <div className="bg-gradient-to-br from-purple-600/20 to-pink-600/20 backdrop-blur-lg rounded-3xl p-8 border border-purple-500/30 overflow-hidden relative">
+                <div className="relative w-full h-96 flex items-center justify-center">
+                  <img
+                    key={selectedImageIndex}
+                    src={selectedProduct.imageUrls?.[selectedImageIndex] || selectedProduct.imageUrls?.[0] || selectedProduct.image}
+                    alt={selectedProduct.name}
+                    className={`max-w-full max-h-full object-contain rounded-2xl shadow-2xl transition-all duration-500 transform ${
+                      imageTransition ? 'opacity-0 scale-95 blur-sm' : 'opacity-100 scale-100 blur-0'
+                    }`}
+                  />
+                </div>
+              </div>
+              
+              {selectedProduct.imageUrls && selectedProduct.imageUrls.length > 1 && (
+                <div className="grid grid-cols-4 gap-3">
+                  {selectedProduct.imageUrls.map((imageUrl, index) => (
+                    <button
+                      key={index}
+                      onClick={() => handleImageChange(index)}
+                      className={`group bg-gradient-to-br from-purple-600/20 to-pink-600/20 backdrop-blur-lg rounded-xl p-2 border-2 transition-all duration-300 hover:scale-110 hover:shadow-xl hover:shadow-purple-500/30 ${
+                        selectedImageIndex === index 
+                          ? 'border-purple-500 shadow-xl shadow-purple-500/50 scale-105 ring-2 ring-purple-400 ring-offset-2 ring-offset-slate-900' 
+                          : 'border-purple-500/30 hover:border-purple-400/70'
+                      }`}
+                    >
+                      <div className="relative overflow-hidden rounded-lg">
+                        <img
+                          src={imageUrl}
+                          alt={`${selectedProduct.name} - Vista ${index + 1}`}
+                          className={`w-full h-20 object-cover transition-all duration-300 ${
+                            selectedImageIndex === index ? '' : 'group-hover:scale-110 group-hover:brightness-110'
+                          }`}
+                        />
+                        <div className={`absolute inset-0 bg-gradient-to-t from-purple-600/40 to-transparent transition-opacity duration-300 ${
+                          selectedImageIndex === index ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+                        }`}></div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
             <div className="space-y-6">
@@ -399,7 +319,6 @@ function App() {
     );
   }
 
-  // VISTA PRINCIPAL (HOME)
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">
       <div className="absolute inset-0 opacity-10">
@@ -415,14 +334,10 @@ function App() {
               <p className="text-purple-300 text-sm">Smoke Culture</p>
             </div>
             <div className="hidden md:flex gap-6 text-white">
-              {/* CORREGIDO: Home ahora apunta a la raíz */}
-              <a href="/" className="hover:text-purple-400 transition font-semibold">Home</a> 
-              {/* Este ya estaba bien, apunta a una ancla */}
+              <a href="#" className="hover:text-purple-400 transition font-semibold">Home</a>
               <a href="#productos" className="hover:text-purple-400 transition">Productos</a>
-              {/* CORREGIDO: Usar una URL válida o el ID de una sección */}
-              <a href="/nosotros" className="hover:text-purple-400 transition">Nosotros</a> 
-              {/* CORREGIDO: Usar una URL válida o el ID de una sección */}
-              <a href="/contacto" className="hover:text-purple-400 transition">Contacto</a> 
+              <a href="#" className="hover:text-purple-400 transition">Nosotros</a>
+              <a href="#" className="hover:text-purple-400 transition">Contacto</a>
             </div>
           </div>
         </div>
@@ -452,11 +367,11 @@ function App() {
                         className="bg-white bg-opacity-10 backdrop-blur-lg rounded-3xl overflow-hidden border-2 border-purple-500/30 hover:border-purple-500 transition-all cursor-pointer transform hover:scale-105 duration-300"
                       >
                         <div className="grid md:grid-cols-2 gap-8 p-8">
-                          <div className="relative">
+                          <div className="relative flex items-center justify-center bg-gradient-to-br from-purple-600/10 to-pink-600/10 rounded-2xl p-6">
                             <img
                               src={product.imageUrls?.[0] || product.image}
                               alt={product.name}
-                              className="w-full h-96 object-cover rounded-2xl shadow-2xl"
+                              className="w-full h-96 object-contain rounded-2xl shadow-2xl"
                             />
                             {product.badge && (
                               <div className={`absolute top-4 right-4 px-4 py-2 rounded-full text-sm font-bold ${
@@ -547,13 +462,13 @@ function App() {
               <div
                 key={product._id}
                 onClick={() => handleProductClick(product)}
-                className="bg-white bg-opacity-10 backdrop-blur-lg rounded-2xl overflow-hidden border border-purple-500/20 hover:border-purple-500/50 transition-all duration-300 transform hover:scale-105 cursor-pointer"
+                className="bg-white bg-opacity-10 backdrop-blur-lg rounded-2xl overflow-hidden border border-purple-500/20 hover:border-purple-500/50 transition-all duration-300 transform hover:scale-105 cursor-pointer shadow-lg hover:shadow-2xl"
               >
-                <div className="relative h-64 bg-gradient-to-br from-purple-600 to-pink-600 overflow-hidden">
+                <div className="relative aspect-[3/4] bg-gradient-to-br from-purple-600/20 to-pink-600/20 overflow-hidden">
                   <img
                     src={product.imageUrls?.[0] || product.image}
                     alt={product.name}
-                    className="w-full h-full object-cover opacity-80"
+                    className="w-full h-full object-contain p-4"
                   />
                   {product.badge && (
                     <div className={`absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold ${
@@ -564,12 +479,12 @@ function App() {
                   )}
                 </div>
 
-                <div className="p-6">
-                  <h3 className="text-xl font-bold text-white mb-2">{product.name}</h3>
+                <div className="p-5">
+                  <h3 className="text-lg font-bold text-white mb-2 line-clamp-2 min-h-[3.5rem]">{product.name}</h3>
                   
                   <div className="flex justify-between items-center mb-3">
                     {renderStars(product.rating)}
-                    <span className="text-green-400 text-sm font-semibold">{product.stock}</span>
+                    <span className="text-green-400 text-xs font-semibold">{product.stock}</span>
                   </div>
 
                   <div className="grid grid-cols-2 gap-2 mb-4 text-xs">
@@ -583,14 +498,14 @@ function App() {
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-end justify-between">
                     <div>
                       {product.originalPrice && (
-                        <span className="text-gray-400 line-through text-sm">${product.originalPrice.toFixed(2)}</span>
+                        <span className="text-gray-400 line-through text-sm block">${product.originalPrice.toFixed(2)}</span>
                       )}
-                      <div className="text-3xl font-bold text-white">${product.price.toFixed(2)}</div>
+                      <div className="text-2xl font-bold text-white">${product.price.toFixed(2)}</div>
                     </div>
-                    <div className="text-purple-300 text-sm">Ver detalles →</div>
+                    <div className="text-purple-300 text-sm font-semibold">Ver más →</div>
                   </div>
                 </div>
               </div>
@@ -614,12 +529,9 @@ function App() {
           <p className="text-purple-300 mb-4">Smoke Culture</p>
           <p className="text-sm">© 2024 NEBULA. Todos los derechos reservados.</p>
           <div className="flex justify-center gap-4 mt-4">
-            {/* CORREGIDO: Usar una URL válida o el ID de una sección */}
-            <a href="/instagram" className="hover:text-purple-400 transition">Instagram</a>
-            {/* CORREGIDO: Usar una URL válida o el ID de una sección */}
-            <a href="/facebook" className="hover:text-purple-400 transition">Facebook</a>
-            {/* CORREGIDO: Usar una URL válida o el ID de una sección */}
-            <a href="/tiktok" className="hover:text-purple-400 transition">TikTok</a>
+            <a href="#" className="hover:text-purple-400 transition">Instagram</a>
+            <a href="#" className="hover:text-purple-400 transition">Facebook</a>
+            <a href="#" className="hover:text-purple-400 transition">TikTok</a>
           </div>
         </div>
       </footer>
