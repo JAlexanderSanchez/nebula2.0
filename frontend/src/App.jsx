@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Star, MessageCircle, Package, Droplets, Zap, ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
+import { productService } from './services/api';
 
 const WHATSAPP_NUMBER = '59360249628';
 
@@ -12,51 +13,238 @@ function App() {
   const [hoverRating, setHoverRating] = useState(0);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [imageTransition, setImageTransition] = useState(false);
+  
+  // Estados para productos y carga
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const products = [
-    {
-      _id: '1',
-      name: "Dozo THC-P Sugar Sauce 5 GR",
-      slug: "dozo-thc-p-sugar-sauce-5gr",
-      price: 50.00,
-      rating: 4.5,
-      reviews: 24,
-      stock: "Disponible",
-      specs: { puffs: "25K", nicotineLevel: "50MG", liquidVolume: "18ML", functions: "MED/BOOST" },
-      availableColors: 5,
-      imageUrls: [
-        "https://images.unsplash.com/photo-1590508969892-02fcc63dc1f2?w=600&h=600&fit=crop",
-        "https://images.unsplash.com/photo-1609006398633-b8e8c6a8f5f1?w=600&h=600&fit=crop",
-        "https://images.unsplash.com/photo-1609006398915-f0271d3b4d9f?w=600&h=600&fit=crop"
-      ],
-      badge: "Últimas unidades",
-      description: "Experiencia premium de vapeo con tecnología avanzada",
-      longDescription: "El Dozo THC-P Sugar Sauce ofrece una experiencia de vapeo incomparable con su fórmula especial de 5 gramos.",
-      isFeatured: true
+  // Cargar productos del backend al montar el componente
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const response = await productService.getAllProducts();
+        
+        // El backend devuelve { success: true, data: products }
+        if (response.success && response.data) {
+          setProducts(response.data);
+        } else {
+          setError('No se pudieron cargar los productos');
+        }
+      } catch (err) {
+        console.error('Error al cargar productos:', err);
+        setError('Error al conectar con el servidor. Verifica que el backend esté funcionando.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  // Productos hardcodeados como fallback (se eliminarán después de verificar que funciona)
+  const fallbackProducts = [
+  {
+    "_id": "1",
+    "name": "Fume x Fruitia Vape Desechable 8000 Puffs, 5% Nicotina",
+    "slug": "fume-x-fruitia-desechable-8000-puffs",
+    "price": 12.00,
+    "originalPrice": null,
+    "rating": 4.5,
+    "reviews": 0,
+    "stock": "Disponible",
+    "specs": {
+      "puffs": "8000",
+      "nicotineLevel": "5%",
+      "liquidVolume": "17ml",
+      "battery": "700 mAh",
+      "charging": "USB-C",
+      "coil": "Mesh Coil",
+      "display": "Pantalla LED (Batería y Líquido)"
     },
-    {
-      _id: '2',
-      name: "SWF 3tk 40K",
-      slug: "swf-3tk-40k",
-      price: 30.00,
-      rating: 4.8,
-      reviews: 89,
-      stock: "Disponible",
-      specs: { puffs: "40K", nicotineLevel: "35MG", liquidVolume: "20ML", functions: "DUAL MODE" },
-      availableColors: 4,
-      imageUrls: [
-        "https://images.unsplash.com/photo-1609006398633-b8e8c6a8f5f1?w=600&h=600&fit=crop",
-        "https://images.unsplash.com/photo-1590508969892-02fcc63dc1f2?w=600&h=600&fit=crop",
-        "https://images.unsplash.com/photo-1557672172-298e090bd0f1?w=600&h=600&fit=crop"
-      ],
-      badge: "Últimas unidades",
-      description: "Potencia y duración excepcional para todo el día",
-      longDescription: "Con 40,000 puffs, el SWF 3tk es el compañero perfecto para usuarios intensivos.",
-      isFeatured: true
-    }
+    "availableColors": 3,
+    "imageUrls": [
+      "https://cliccloud.co/empresas/productos-600/clic-v2-Q7ffOgbcCGYVwquphEO2-2025-10-10.png",
+      "URL_IMAGEN_FUME_FRUITIA_2"
+    ],
+    "badge": "NUEVO",
+    "description": "Vape desechable de alto rendimiento con bobina de malla y pantalla LED.",
+    "longDescription": "El Fume x Fruitia 8000 Puffs es un dispositivo de vapeo desechable y recargable que combina potencia y sabor. Ofrece más de 8000 caladas con 5% de nicotina, 17 ml de e-líquido, batería recargable (700 mAh) y pantalla LED para monitorear niveles.",
+    "isFeatured": true
+  },
+  {
+    "_id": "2",
+    "name": "Death Row Vapes 7000 Puffs - Blue Razz",
+    "slug": "death-row-vapes-7000-blue-razz",
+    "price": 10.00,
+    "originalPrice": null,
+    "rating": 4.5,
+    "reviews": 0,
+    "stock": "Disponible",
+    "specs": {
+      "puffs": "7000",
+      "nicotineLevel": "5%",
+      "liquidVolume": "12ml",
+      "battery": "700 mAh",
+      "charging": "USB-C",
+      "coil": "Mesh Coil",
+      "flavor": "Blue Razz (Morazul)"
+    },
+    "availableColors": 4,
+    "imageUrls": [
+      "https://cdn11.bigcommerce.com/s-5zbebjcuob/images/stencil/1280x1280/products/7194/18501/GR010604-1__65963.1696937320.jpg?c=2",
+      "URL_IMAGEN_BLUE_RAZZ_2"
+    ],
+    "badge": "NUEVO",
+    "description": "Vape desechable Death Row (Snoop Dogg) con tecnología de malla y batería recargable, sabor Blue Razz.",
+    "longDescription": "Dispositivo desechable y recargable que ofrece hasta 7000 caladas. Contiene 12 ml de e-líquido con 5% de sal de nicotina y una batería de 700 mAh recargable por USB-C. El sabor Blue Razz combina mora azul con un toque fresco.",
+    "isFeatured": true
+  },
+  {
+    "_id": "3",
+    "name": "Yogi Bar 8000 Puffs - Varios sabores - 5% Nicotina",
+    "slug": "yogi-bar-8000",
+    "price": 9.00,
+    "originalPrice": null,
+    "rating": 4.6,
+    "reviews": 0,
+    "stock": "Disponible",
+    "specs": {
+      "puffs": "8000",
+      "nicotineLevel": "5%",
+      "liquidVolume": "17ml",
+      "battery": "600 mAh",
+      "charging": "USB-C",
+      "coil": "Mesh Coil",
+      "airflow": "Ajustable"
+    },
+    "availableColors": 3,
+    "imageUrls": [
+      "https://vapecraftinc.com/media/amasty/webp/catalog/product/cache/9af08a49c64f622a3ecfb8ecadcd8f84/y/o/yogi-bar-8000-disposable-vape_jpg.webp",
+      "URL_IMAGEN_YOGI_STRAWBERRY_2"
+    ],
+    "badge": "NUEVO",
+    "description": "Vape desechable Yogi Bar con el galardonado e-líquido de barra de granola de fresa.",
+    "longDescription": "Dispositivo desechable recargable de la marca Yogi E-Liquid. Ofrece hasta 8000 caladas, 17ml de e-líquido de 5% de nicotina y una batería recargable de 600mAh. Sabor a dulce y madura fresa combinada con la dulzura natural.",
+    "isFeatured": true
+  },
+  {
+    "_id": "4",
+    "name": "Flavor Vapes 6000 Puffs - Cool Mint",
+    "slug": "flavor-vapes-6000-cool-mint",
+    "price": 10.00,
+    "originalPrice": null,
+    "rating": 4.4,
+    "reviews": 0,
+    "stock": "Disponible",
+    "specs": {
+      "puffs": "6000",
+      "nicotineLevel": "5%",
+      "liquidVolume": "13ml",
+      "charging": "USB-C",
+      "coil": "Mesh Coil",
+      "flavor": "Cool Mint (Menta Fría)"
+    },
+    "availableColors": 4,
+    "imageUrls": [
+      "URL_IMAGEN_FLAVOR_COOL_MINT_1",
+      "URL_IMAGEN_FLAVOR_COOL_MINT_2"
+    ],
+    "badge": "NUEVO",
+    "description": "Vape desechable Flavor Vapes con diseño compacto y 6000 caladas garantizadas, sabor menta fría.",
+    "longDescription": "Un dispositivo desechable de alto rendimiento con 13ml de e-líquido y 5% de nicotina. Cuenta con una batería recargable vía USB-C y bobina Mesh para una producción de vapor consistente. El sabor Cool Mint ofrece una sensación limpia y refrescante de menta.",
+    "isFeatured": false
+  },
+  {
+    "_id": "5",
+    "name": "Strio Vapes XC6500 Puffs - 5% de Nicotina",
+    "slug": "strio-vapes-xc6500-blue-razz-ice",
+    "price": 14.00,
+    "originalPrice": null,
+    "rating": 4.3,
+    "reviews": 0,
+    "stock": "Disponible",
+    "specs": {
+      "puffs": "6500",
+      "nicotineLevel": "5%",
+      "liquidVolume": "12ml",
+      "charging": "USB-C",
+      "coil": "Mesh Coil",
+      "flavor": "Blue Razz Ice"
+    },
+    "availableColors": 5,
+    "imageUrls": [
+      "https://westcoastvapesupply.com/cdn/shop/articles/The_Strio_EBCreate_XC6500_Disposable_Vape_Flavor_Review.jpg?v=1712899037&width=700",
+      "URL_IMAGEN_STRIO_BLUE_RAZZ_2"
+    ],
+    "badge": "Últimas unidades",
+    "description": "Vape desechable Strio XC, recargable y con un diseño ergonómico, sabor mora azul helada.",
+    "longDescription": "El Strio XC ofrece aproximadamente 6500 caladas con 12ml de e-líquido de sal de nicotina al 5%. Refrescante.",
+    "isFeatured": false
+  },
+  {
+    "_id": "6",
+    "name": "UWELL Vapes 12000 Puffs - Watermelon Ice",
+    "slug": "uwell-vapes-12000-watermelon-ice",
+    "price": 18.00,
+    "originalPrice": null,
+    "rating": 4.8,
+    "reviews": 0,
+    "stock": "Disponible",
+    "specs": {
+      "puffs": "12000",
+      "nicotineLevel": "5%",
+      "liquidVolume": "20ml",
+      "charging": "USB-C",
+      "coil": "Dual Mesh Coil",
+      "display": "LED de Batería y Líquido",
+      "flavor": "Watermelon Ice"
+    },
+    "availableColors": 2,
+    "imageUrls": [
+      "https://nubedensa.com/wp-content/uploads/2025/09/482222602_1912744686167799_3594784751135893163_n-700x700.webp.jpg",
+      "URL_IMAGEN_UWELL_WM_ICE_2"
+    ],
+    "badge": "NUEVO",
+    "description": "Vape desechable UWELL de ultra alta capacidad con tecnología de doble malla y 12000 caladas.",
+    "longDescription": "Dispositivo desechable insignia de UWELL, diseñado para longevidad y sabor intenso. Ofrece hasta 12000 caladas, 5% de nicotina y una batería recargable de larga duración. Su bobina dual asegura que cada calada sea potente. Sabor: Sandía dulce con un acabado refrescante de hielo.",
+    "isFeatured": true
+  },
+  {
+    "_id": "7",
+    "name": "NEXA Vapes 20000 Puffs - Chicago Blueberry Mint",
+    "slug": "nexa-vapes-20000-chicago-blueberry-mint",
+    "price": 20.00,
+    "originalPrice": null,
+    "rating": 4.7,
+    "reviews": 0,
+    "stock": "Disponible",
+    "specs": {
+      "puffs": "20000",
+      "nicotineLevel": "5%",
+      "liquidVolume": "20ml",
+      "charging": "USB-C",
+      "coil": "Dual Mesh Coil",
+      "display": "Pantalla LED de Monitoreo",
+      "flavor": "Chicago Blueberry Mint"
+    },
+    "availableColors": 2,
+    "imageUrls": [
+      "https://tvx45.com/cdn/shop/files/1_12_2024_NEXA_N20000_Disposable_Vape_10__76867.1706743633_1024x1024.jpg?v=1711221934",
+      "URL_IMAGEN_NEXA_CBM_2"
+    ],
+    "badge": "Últimas unidades",
+    "description": "Vape desechable NEXA de capacidad extrema con pantalla de visualización y tecnología de doble malla.",
+    "longDescription": "El NEXA 20K ofrece hasta 20,000 caladas, impulsado por una bobina dual de malla para sabor y vapor constantes. Contiene 5% de nicotina, batería recargable y una pantalla grande para monitorear el e-líquido y la batería. El sabor Chicago Blueberry Mint combina arándanos maduros con un toque refrescante de menta.",
+    "isFeatured": true
+  }
   ];
 
-  const featuredProducts = products.filter(p => p.isFeatured);
+  // Usar productos del backend, o fallback si hay error
+  const displayProducts = products.length > 0 ? products : (error ? fallbackProducts : []);
+  const featuredProducts = displayProducts.filter(p => p.isFeatured);
 
   useEffect(() => {
     if (!isCarouselPaused && currentView === 'home' && featuredProducts.length > 0) {
@@ -66,6 +254,41 @@ function App() {
       return () => clearInterval(interval);
     }
   }, [isCarouselPaused, currentView, featuredProducts.length]);
+
+  // Mostrar estado de carga
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-purple-500 mx-auto mb-4"></div>
+          <p className="text-white text-xl">Cargando productos...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Mostrar error si no hay productos y hay un error
+  if (error && products.length === 0) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
+        <div className="text-center max-w-md mx-auto px-4">
+          <div className="bg-red-500/20 border border-red-500 rounded-2xl p-6 mb-4">
+            <p className="text-red-400 text-lg font-semibold mb-2">⚠️ Error de conexión</p>
+            <p className="text-gray-300">{error}</p>
+            <p className="text-gray-400 text-sm mt-4">
+              Verifica que el backend esté funcionando en: {process.env.REACT_APP_API_URL || 'https://nebula2-0.onrender.com'}
+            </p>
+          </div>
+          <button
+            onClick={() => window.location.reload()}
+            className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-6 rounded-lg transition"
+          >
+            Reintentar
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   const nextSlide = () => {
     setCarouselIndex((prev) => (prev + 1) % featuredProducts.length);
@@ -449,7 +672,7 @@ function App() {
             </p>
             <div className="flex flex-wrap justify-center gap-4 text-sm">
               <span className="bg-purple-600 text-white px-4 py-2 rounded-full">
-                {products.length} productos
+                {displayProducts.length} productos
               </span>
               <span className="bg-white text-purple-900 px-4 py-2 rounded-full font-semibold">
                 Marcas Recomendadas
@@ -458,7 +681,7 @@ function App() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {products.map((product) => (
+            {displayProducts.map((product) => (
               <div
                 key={product._id}
                 onClick={() => handleProductClick(product)}
