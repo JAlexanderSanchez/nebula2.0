@@ -179,7 +179,7 @@ const products = [
     reviews: 0,
     stock: "Disponible",
     imageUrls: [
-      "https://provape.com/media/mf_webp/jpg/media/catalog/product/cache/896a704700b43f8a3d5d98936b485a9e/c/h/chicago_blueberry_mint_nexa_n20000_rechargeable_disposable_1.webp",
+      "https://tvx45.com/cdn/shop/files/1_12_2024_NEXA_N20000_Disposable_Vape_10__76867.1706743633_1024x1024.jpg?v=1711221934",
       "URL_IMAGEN_NEXA_CBM_2"
     ],
     availableColors: 2,

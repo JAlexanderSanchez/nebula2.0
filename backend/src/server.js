@@ -14,47 +14,58 @@ connectDB();
 
 const app = express();
 
-// ------------------------------------------------------------------
-// 🛑 CONFIGURACIÓN DE CORS CORREGIDA 🛑
-// ------------------------------------------------------------------
+// 🚨 MODIFICACIÓN CLAVE PARA CORS 🚨
+// 1. Definimos los orígenes permitidos
+const allowedOrigins = [
+    // Dominio de tu frontend en Vercel
+    'https://nebula2-0-k2fn.vercel.app', 
+    // Dominio de Render (opcional, pero buena práctica)
+    'https://nebula2-0.onrender.com',    
+    // Para pruebas locales
+    'http://localhost:3000'              
+];
 
-// 1. **REEMPLAZA ESTA LÍNEA** con el dominio real de tu frontend en Vercel.
-//    Ejemplo: 'https://nebula2-0-frontend.vercel.app'
-const allowedOrigin = 'https://nebula2-0-k2fn.vercel.app/'; 
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Permitir la solicitud si el origen no está definido (como Postman o peticiones internas del servidor)
+    // O si el origen está en la lista de permitidos
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+};
 
-app.use(cors({
-    origin: allowedOrigin,
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Añade todos los métodos que uses
-    credentials: true // Si usas cookies o tokens de sesión
-}));
-
-// ------------------------------------------------------------------
 // Middlewares
+app.use(cors(corsOptions)); // Aplicamos la nueva configuración CORS
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Ruta de prueba
 app.get('/', (req, res) => {
-    res.json({
-        message: '🚀 NEBULA Smoke Culture',
-        version: '1.0.0',
-        status: 'active'
-    });
+  res.json({
+    message: '🚀 NEBULA Smoke Culture API',
+    version: '1.0.0',
+    status: 'active'
+  });
 });
 
 // Rutas de API
-app.use('/api', productRoutes);
+// OJO: La ruta es /api/productos, lo que significa que el frontend debe buscar /api/products
+app.use('/api', productRoutes); 
 
 // Manejo de errores
 app.use((req, res) => {
-    res.status(404).json({
-        success: false,
-        message: 'Ruta no encontrada'
-    });
+  res.status(404).json({
+    success: false,
+    message: 'Ruta no encontrada'
+  });
 });
 
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-    console.log(`🚀 Servidor corriendo en puerto ${PORT}`);
+  console.log(`🚀 Servidor corriendo en puerto ${PORT}`);
 });
