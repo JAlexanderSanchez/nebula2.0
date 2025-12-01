@@ -6,8 +6,15 @@ import axios from 'axios';
 // NOTA: Si REACT_APP_API_URL incluye /api, no lo agregues de nuevo
 // Si solo incluye el dominio, entonces agregamos /api
 const BASE_URL = process.env.REACT_APP_API_URL || 'https://nebula2-0.onrender.com';
+
+// Debug: mostrar la URL que se está usando
+console.log('🔧 Configuración API:');
+console.log('  - REACT_APP_API_URL:', process.env.REACT_APP_API_URL || 'NO CONFIGURADA (usando fallback)');
+console.log('  - BASE_URL:', BASE_URL);
+
 // Asegurarnos de que no tenga /api duplicado
 const API_URL = BASE_URL.endsWith('/api') ? BASE_URL.replace(/\/api$/, '') : BASE_URL;
+console.log('  - API_URL final:', API_URL);
 
 // Crear instancia de axios con configuración base
 const api = axios.create({
