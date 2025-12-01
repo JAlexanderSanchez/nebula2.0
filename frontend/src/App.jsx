@@ -418,6 +418,7 @@ function App() {
                     onError={(e) => {
                       e.target.style.display = 'none';
                     }}
+                    loading="eager"
                   />
                 </div>
               </div>
@@ -630,9 +631,12 @@ function App() {
                         <div className="grid md:grid-cols-2 gap-8 p-8">
                           <div className="relative flex items-center justify-center bg-gradient-to-br from-purple-600/10 to-pink-600/10 rounded-2xl p-6">
                             <img
-                              src={product.imageUrls?.[0] || product.image}
-                              alt={product.name}
+                              src={product.imageUrls?.[0] || product.image || ''}
+                              alt={product.name || 'Producto'}
                               className="w-full h-96 object-contain rounded-2xl shadow-2xl"
+                              onError={(e) => {
+                                e.target.style.display = 'none';
+                              }}
                             />
                             {product.badge && (
                               <div className={`absolute top-4 right-4 px-4 py-2 rounded-full text-sm font-bold ${
@@ -731,9 +735,12 @@ function App() {
               >
                 <div className="relative aspect-[3/4] bg-gradient-to-br from-purple-600/20 to-pink-600/20 overflow-hidden">
                   <img
-                    src={product.imageUrls?.[0] || product.image}
-                    alt={product.name}
+                    src={product.imageUrls?.[0] || product.image || ''}
+                    alt={product.name || 'Producto'}
                     className="w-full h-full object-contain p-4"
+                    onError={(e) => {
+                      e.target.style.display = 'none';
+                    }}
                   />
                   {product.badge && (
                     <div className={`absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold ${
