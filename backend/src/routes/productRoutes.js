@@ -12,13 +12,13 @@ const {
   deleteProduct
 } = require('../controllers/productController');
 
-router.get('/products', getAllProducts);
-router.get('/products/featured', getFeaturedProducts);
-router.get('/products/:id', getProductById);
-router.get('/products/slug/:slug', getProductBySlug);
-router.post('/products', createProduct);
-router.put('/products/:id', updateProduct);
-router.delete('/products/:id', deleteProduct);
+router.get('/', getAllProducts);
+router.get('/featured', getFeaturedProducts);
+router.get('/:id', getProductById);
+router.get('/slug/:slug', getProductBySlug);
+router.post('/', createProduct);
+router.put('/:id', updateProduct);
+router.delete('/:id', deleteProduct);
 
 module.exports = router;
 

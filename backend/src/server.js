@@ -54,7 +54,7 @@ app.get('/', (req, res) => {
 
 // Rutas de API
 // OJO: La ruta es /api/productos, lo que significa que el frontend debe buscar /api/products
-app.use('/api', productRoutes); 
+app.use('/api/products', productRoutes); 
 
 // Manejo de errores
 app.use((req, res) => {
